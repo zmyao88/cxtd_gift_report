@@ -78,7 +78,7 @@ getting_file_dir <- function(base_dir=getwd(), output_file_name='member_growth.x
         new_dir <- file.path(paste(base_dir, 'gift_reports', today(), sep = '/'))
     }
     #create file names
-    sales_output_dir <- paste(new_dir, output_file_name, sep = '/')
+    sales_output_dir <- normalizePath(paste(new_dir, output_file_name, sep = '/'))
     return(sales_output_dir)
 }
 

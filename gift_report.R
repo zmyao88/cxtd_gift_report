@@ -61,7 +61,7 @@ getting_gift_df <- function(db_con, end_time=today(), rpt_dur=7){
 
 
 getting_file_dir <- function(base_dir=getwd(), output_file_name='member_growth.xlsx') {
-    new_dir <- base_dir
+    new_dir <- file.path(base_dir)
     
     if (!file.exists(file.path(paste(base_dir, 'reports', today(), sep = '/')))) {
         if (!file.exists(file.path(paste(base_dir, 'reports',sep = '/')))) {

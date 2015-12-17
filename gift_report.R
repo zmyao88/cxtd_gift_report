@@ -113,3 +113,5 @@ member_source_list <- c("03"="RuiHong",
                         "09"="iTiandi",
                         "08" = "The Hub")
 output_xlsx(final, member_source_list, sales_output_dir) 
+
+print(paste(now(), 'Success!', sep = " "))

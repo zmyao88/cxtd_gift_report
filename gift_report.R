@@ -84,19 +84,20 @@ getting_file_dir <- function(base_dir=getwd(), output_file_name='gift_status.xls
 
 
 output_xlsx <- function(big_df, member_source_list, sales_output_dir){
-    wb <- createWorkbook()
-    # each mall
-    for (ms in names(member_source_list)){
-        current_sheet <- createSheet(wb, sheetName=member_source_list[ms])
-        current_df <- big_df %>% filter(member_source == ms)
-        addDataFrame(current_df, current_sheet)
-    }
+    wb <- createWorkbook()    
     # summary 
     summary_df <- big_df %>% 
         group_by(gift_detail_code, title_sc) %>%
         summarize(total_redeem = n())
     summary_sheet <- createSheet(wb, sheetName="Summary")
     addDataFrame(summary_df, summary_sheet)
+    # each mall
+    for (ms in names(member_source_list)){
+        current_sheet <- createSheet(wb, sheetName=member_source_list[ms])
+        current_df <- big_df %>% filter(member_source == ms)
+        addDataFrame(current_df, current_sheet)
+    }
+
     
     #save xlsx
     saveWorkbook(wb, sales_output_dir)
@@ -107,7 +108,7 @@ output_xlsx <- function(big_df, member_source_list, sales_output_dir){
 # acutal FUNCTION CALLS
 final <- getting_gift_df(my_db, rpt_dur = 20)
 sales_output_dir <- getting_file_dir()
-
+# sales_output_dir <- getting_file_dir('~/src/all_reports')
 # prep excel 
 member_source_list <- c("03"="RuiHong", 
                         "09"="iTiandi",

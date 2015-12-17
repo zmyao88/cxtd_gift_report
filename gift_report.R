@@ -63,11 +63,11 @@ getting_gift_df <- function(db_con, end_time=today(), rpt_dur=7){
 getting_file_dir <- function(base_dir=getwd(), output_file_name='member_growth.xlsx') {
     new_dir <- file.path(base_dir)
     
-    if (!file.exists(file.path(paste(base_dir, 'reports', today(), sep = '/')))) {
-        if (!file.exists(file.path(paste(base_dir, 'reports',sep = '/')))) {
-            dir.create(file.path(paste(base_dir, 'reports',sep = '/')))
+    if (!file.exists(file.path(paste(base_dir, 'gift_reports', today(), sep = '/')))) {
+        if (!file.exists(file.path(paste(base_dir, 'gift_reports',sep = '/')))) {
+            dir.create(file.path(paste(base_dir, 'gift_reports',sep = '/')))
         }    
-        new_dir <- paste(new_dir, 'reports', sep = '/')
+        new_dir <- paste(new_dir, 'gift_reports', sep = '/')
         print(new_dir)
         dir.create(file.path(paste(new_dir, today(), sep = '/')))
         new_dir <- paste(new_dir, today(), sep = '/')
@@ -75,7 +75,7 @@ getting_file_dir <- function(base_dir=getwd(), output_file_name='member_growth.x
     }
     if(base_dir == new_dir){
         ### do something
-        new_dir <- file.path(paste(base_dir, 'reports', today(), sep = '/'))
+        new_dir <- file.path(paste(base_dir, 'gift_reports', today(), sep = '/'))
     }
     #create file names
     sales_output_dir <- paste(new_dir, output_file_name, sep = '/')

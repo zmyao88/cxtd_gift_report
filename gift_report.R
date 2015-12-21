@@ -106,7 +106,8 @@ output_xlsx <- function(big_df, member_source_list, sales_output_dir){
 
 
 # acutal FUNCTION CALLS
-final <- getting_gift_df(my_db, rpt_dur = 20)
+# final <- getting_gift_df(my_db, rpt_dur = 20)
+final <- getting_gift_df(my_db)
 sales_output_dir <- getting_file_dir()
 # sales_output_dir <- getting_file_dir('~/src/all_reports')
 # prep excel 

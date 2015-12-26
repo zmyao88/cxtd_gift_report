@@ -44,9 +44,27 @@ getting_gift_df <- function(db_con, end_time=today(), rpt_dur=7){
         inner_join(gift_detail, by="gift_detail_id") %>% 
         inner_join(member_address, by = "address_id") %>% 
         inner_join(member, by = "member_id") %>% 
-        collect() %>%
-        mutate(redeem_date = as.character(floor_date(created_datetime, unit = 'day'))) %>%
-        select(redeem_date, member_card_no, recipient_mobile, title_sc, gift_detail_code, cost_of_redeem, address, member_source)
+        collect() 
+    if (nrow(final) != 0 ) {
+        final <- final %>%
+            mutate(redeem_date = as.character(floor_date(created_datetime, unit = 'day')),
+                   num_of_redeem = 1) %>%
+            select(redeem_date, member_card_no, recipient_mobile, title_sc, 
+                   gift_detail_code, cost_of_redeem, num_of_redeem, address, member_source)
+    }else {
+        final <- data.frame(redeem_date = character(),
+                            redeem_date = character(),
+                            member_card_no = character(),
+                            recipient_mobile = character(),
+                            title_sc = character(),
+                            gift_detail_code = character(),
+                            cost_of_redeem = character(),
+                            num_of_redeem = character(),
+                            address = character(),
+                            member_source = character())
+                            
+    }
+        
     
     return(final)
 }
@@ -111,8 +129,8 @@ final <- getting_gift_df(my_db)
 sales_output_dir <- getting_file_dir()
 # sales_output_dir <- getting_file_dir('~/src/all_reports')
 # prep excel 
-member_source_list <- c("03"="RuiHong", 
-                        "09"="iTiandi",
+member_source_list <- c("09"="iTiandi",
+                        "03"="RuiHong", 
                         "08" = "The Hub")
 output_xlsx(final, member_source_list, sales_output_dir) 
 

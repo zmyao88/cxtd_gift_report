@@ -20,22 +20,22 @@ getting_gift_df <- function(db_con, end_time=today(), rpt_dur=7){
     
     ### actual function
     ## member card, source
-    member <- tbl(my_db, 'member') %>% 
+    member <- tbl(db_con, 'member') %>% 
         select(member_id, member_card_no, member_source)
     
     ### gift redeem transaction detail
-    gift <- tbl(my_db, 'gift') %>% 
+    gift <- tbl(db_con, 'gift') %>% 
         filter(created_datetime >= start_time & created_datetime < end_time) %>%
         select(gift_id, gift_detail_id, member_id, cost_of_redeem, address_id, created_datetime)
     
     # gift DETAIL ---->> the detialed info of the specific gift
-    gift_detail <- tbl(my_db, 'gift_detail') %>% 
+    gift_detail <- tbl(db_con, 'gift_detail') %>% 
         filter(status == 0) %>%
         select(gift_detail_id, gift_detail_code, title_sc)
     
     # gift_order_status <- data.frame(tbl(my_db, 'gift_order_status')) %>%
     # getting receipiant name, mobile, addresss
-    member_address <- tbl(my_db, 'member_address') %>%
+    member_address <- tbl(db_con, 'member_address') %>%
         select(recipient_name, recipient_mobile, address, address_id)
     
     
@@ -101,12 +101,23 @@ getting_file_dir <- function(base_dir=getwd(), output_file_name='gift_status.xls
 }
 
 
-output_xlsx <- function(big_df, member_source_list, sales_output_dir){
+output_xlsx <- function(big_df, member_source_list, sales_output_dir, db_con){
     wb <- createWorkbook()    
     # summary 
     summary_df <- big_df %>% 
         group_by(gift_detail_code, title_sc) %>%
         summarize(total_redeem = n())
+    
+    gift_detail <- tbl(db_con, 'gift_detail') %>% 
+        filter(status == 0) %>% 
+        select(gift_detail_code, title_sc) %>% 
+        collect()
+    
+    summary_df <- summary_df %>% 
+        right_join(gift_detail, by = c("gift_detail_code", "title_sc")) %>%
+        mutate(total_redeem = as.numeric(ifelse(is.na(total_redeem), 0, total_redeem))) %>%
+        arrange(gift_detail_code)
+    
     summary_sheet <- createSheet(wb, sheetName="Summary")
     addDataFrame(summary_df, summary_sheet)
     # each mall
@@ -132,6 +143,6 @@ sales_output_dir <- getting_file_dir()
 member_source_list <- c("09"="iTiandi",
                         "03"="RuiHong", 
                         "08" = "The Hub")
-output_xlsx(final, member_source_list, sales_output_dir) 
+output_xlsx(final, member_source_list, sales_output_dir, my_db) 
 
 print(paste(now(), 'Success!', sep = " "))

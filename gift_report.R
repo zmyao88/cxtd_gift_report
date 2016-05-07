@@ -142,7 +142,8 @@ sales_output_dir <- getting_file_dir()
 # prep excel 
 member_source_list <- c("09"="iTiandi",
                         "03"="RuiHong", 
-                        "08" = "The Hub")
+                        "08" = "The Hub",
+                        "02" = "TPQ")
 output_xlsx(final, member_source_list, sales_output_dir, my_db) 
 
 print(paste(now(), 'Success!', sep = " "))

@@ -3,7 +3,7 @@ require(lubridate)
 require(xlsx)
 
 
-my_db <- src_postgres(dbname = 'cxtd', host = 'localhost', port = 5432, user = 'cxtd', password = 'xintiandi')
+my_db <- src_postgres(dbname = 'cxtd', host = 'localhost', port = 5432, user = 'cxtd', password = 'CxTd1234!')
 #### time prep 
 
 getting_gift_df <- function(db_con, end_time=today(), rpt_dur=7){
@@ -144,7 +144,8 @@ member_source_list <- c("09"="iTiandi",
                         "03"="RuiHong", 
                         "08" = "The Hub",
                         "02" = "TPQ",
-                        "07" = "FSTD")
+                        "07" = "FSTD",
+                        "05" = 'CQTD')
 output_xlsx(final, member_source_list, sales_output_dir, my_db) 
 
 print(paste(now(), 'Success!', sep = " "))

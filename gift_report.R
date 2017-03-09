@@ -145,7 +145,8 @@ member_source_list <- c("09"="iTiandi",
                         "08" = "The Hub",
                         "02" = "TPQ",
                         "07" = "FSTD",
-                        "05" = 'CQTD')
+                        "05" = 'CQTD',
+                        "11" = "RHXC")
 output_xlsx(final, member_source_list, sales_output_dir, my_db) 
 
 print(paste(now(), 'Success!', sep = " "))
